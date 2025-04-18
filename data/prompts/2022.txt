@@ -1,0 +1,457 @@
+You are given a list of documents. Each item includes a `text` field (the display title) and a `filename` field (the linked file name). Your task is to classify each document into **one of the following categories**:
+
+• Request for Proposals (RFP)
+• Contract
+• Comment
+• Memorandum of Understanding (MOU)
+• Regulatory Filing
+• Policy Guidance
+• Public Notice
+• Industry Response
+• Other
+
+Use both the `text` and `filename` fields to infer the category, and refer to the contextual information provided below. If the information is insufficient or ambiguous, choose `Other`.
+
+Return a JSON array with the same number of objects. Each object must include the original `text` and `filename`, along with an additional `category` field. Example:
+{
+  "text": "Example Title",
+  "filename": "example.pdf",
+  "category": "Policy Guidance"
+}
+
+Here is the data:
+[{'safe_text': 'Order_Establishing_Offshore_Wind_Standard_and_Framework_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'Order_Adopting_Modifications_to_the_Clean_Energy_Standard_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'Order_on_Power_Grid_Study_Recommendations_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'draft_version', 'filename': 'servlet_FileDownload'}, {'safe_text': 'request_for_Information', 'filename': 'servlet_FileDownload'}, {'safe_text': 'information_webinar_[PDF]', 'filename': 'NYSERDA-OSW-ORECRFP22-1_Supply-Chain-Webinar-Presentation-Slides_pdf'}, {'safe_text': '2022_State_of_the_State_Address_[PDF]', 'filename': 'NYSERDA-OSW-ORECRFP22-1-Proposers-Conference_Presentation-Slides_pdf'}, {'safe_text': 'Attentive_Energy_LLC_–_Attentive_Energy_One_Proposal_[PDF]', 'filename': 'ORECRFP22-1-Attentive-Energy-One-Proposal-Narrative---Public-Copy---022423_pdf'}, {'safe_text': 'Attentive_Energy_LLC_–_Attentive_Energy_One_Fisheries_Mitigation_Plan', 'filename': 'ATT_Public-Fisheries-Plan_Redacted_pdf'}, {'safe_text': 'Attentive_Energy_LLC_–_Attentive_Energy_One_Environmental_Mitigation_Plan_[PDF]', 'filename': 'ATT_Public-Environmental-Plan_Redacted_pdf'}, {'safe_text': 'Attentive_Energy_LLC_–_Attentive_Energy_One_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'ATT_Public-Stakeholder-Plan_Redacted_pdf'}, {'safe_text': 'Attentive_Energy_LLC_–_Attentive_Energy_One_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'ATT_Public-Jobs-and-Workforce-Plan_Redacted_pdf'}, {'safe_text': 'Arthur_Kill_Terminal_LLC_–_Environmental_Mitigation_Plan_for_Arthur_Kill_Terminal_[PDF]', 'filename': 'Appendix-8---Environmental-Mitigation-Plan---Public_pdf'}, {'safe_text': 'Arthur_Kill_Terminal_LLC_–_Stakeholder_Engagement_Plan_for_Arthur_Kill_Terminal_[PDF]', 'filename': 'Appendix-19---Stakeholder-Engagement-Plan---Public_pdf'}, {'safe_text': 'Arthur_Kill_Terminal_LLC_–_New_York_Jobs_and_Workforce_Plan_for_Arthur_Kill_Terminal_[PDF]', 'filename': 'Appendix-20---NY-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'GE_Vernova_–_Environmental_Mitigation_Plan_for_Port_of_Coeymans_Nacelle_Manufacturing_Facility_[PDF', 'filename': 'Public_GE_Nacelles_Appendix-E-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'GE_Vernova_–_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'Public_GE_Nacelles_Appendix-F---Stakeholder-Engagement-Plan_pdf'}, {'safe_text': 'GE_Vernova_–_Nacelle_Facility_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'Public_GE_Nacelle_Appendix-H-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'GE_Renewable_Energy_LM_Wind_Power_–_Environmental_Mitigation_Plan_for_Port_of_Coeymans_Blade_Manufac', 'filename': 'Public_LM_Blades_Appendix-E-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'GE_Renewable_Energy_LM_Wind_Power_–_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'Public_LM_Blades_Appendix-F---Stakeholder-Engagement-Plan_pdf'}, {'safe_text': 'GE_Renewable_Energy_LM_Wind_Power_–_Blade_Facility_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'Public_LM_Blades_Appendix-H-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Bay_State_Wind_LLC_–_Sunrise_Wind_2_Proposal_[PDF]', 'filename': 'BAY_Public-Proposal-Narrative-230224_pdf'}, {'safe_text': 'Bay_State_Wind_LLC_–_Sunrise_Wind_2_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'BAY_Public-Fisheries-Plan_pdf'}, {'safe_text': 'Bay_State_Wind_LLC_–_Sunrise_Wind_2_Environmental_Mitigation_Plan_[PDF]', 'filename': 'BAY_Public-Environmental-Plan_pdf'}, {'safe_text': 'Bay_State_Wind_LLC_–_Sunrise_Wind_2_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'BAY_Public-Stakeholder-Plan_pdf'}, {'safe_text': 'Bay_State_Wind_LLC_–_Sunrise_Wind_2_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'BAY_Public-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Vestas_Blades_America_–_Supply_Chain_Investment_Plan_[PDF]', 'filename': 'BAY_SCIP_B_4_Public_pdf'}, {'safe_text': 'Vestas_Blades_America_–_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'BAY_SCIP_B_1_Public_pdf'}, {'safe_text': 'Vestas_Blades_America_–_Environmental_Mitigation_Plan_for_Vestas_NY_Blades_Facility_[PDF]', 'filename': 'BAY_SCIP_B_2_Public_pdf'}, {'safe_text': 'Vestas_Blades_America_–_Vestas’_Social_Management_System_[PDF]', 'filename': 'BAY_SCIP_B_3_Public_pdf'}, {'safe_text': 'Beacon_Wind_LLC_–_Beacon_Wind_2_Proposal_[PDF]', 'filename': 'BEAPublic-Proposal-NarrativeRedacted-3323_pdf'}, {'safe_text': 'Beacon_Wind_LLC_–_Beacon_Wind_2_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'BEA_Public-Fisheries-Plan_pdf'}, {'safe_text': 'Beacon_Wind_LLC_–_Beacon_Wind_2_Environmental_Mitigation_Plan_[PDF]', 'filename': 'BEAPublic-Environmental-Planpdf_pdf'}, {'safe_text': 'Beacon_Wind_LLC_–_Beacon_Wind_2_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'BEA_Public-Stakeholder-Engagement-Plan_pdf'}, {'safe_text': 'Beacon_Wind_LLC_–_Beacon_Wind_2_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'BEA_Public-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Cable_Manufacturing_SCIP_–_Environmental_Mitigation_Plan_[PDF]', 'filename': 'PUBLIC-SCIP-Environmental-Mitigation-Plan-Redacted_pdf'}, {'safe_text': 'Cable_Manufacturing_SCIP_–_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'PUBLIC-SCIP-Stakeholder-Engagement-Plan-Redacted_pdf'}, {'safe_text': 'Cable_Manufacturing_SCIP_–_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'PUBLIC-SCIP-Jobs-and-Workforce-Plan-Redacted_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Proposal_[PDF]', 'filename': 'COSW_Public-Proposal-Narrative_3-17-23_Redacted_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Public_Appendices_[zip]', 'filename': 'PUBLIC-Appendices_zip'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'COSW_Public-Fisheries-Plan_02032023_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Environmental_Mitigation_Plan_[PDF]', 'filename': 'COSW_Public-Environmental-Plan_02032023_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Stakeholder_Engagement_Plan_Part_1_[PDF]', 'filename': 'COSW_Public-Stakeholder-Plan_02022023_Pt1_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Stakeholder_Engagement_Plan_Part_2_[PDF]', 'filename': 'COSW_Public-Stakeholder-Plan_02022023_Pt2_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_Stakeholder_Engagement_Plan_Part_3_[PDF]', 'filename': 'COSW_Public-Stakeholder-Plan_02022023_Pt3_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Community_Offshore_Wind_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'COSW_Public-Jobs-and-Workforce-Plan_02032023_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Environmental_Mitigation_Plans_for_SCIP_Facilities_[PDF]', 'filename': 'COSW_Public-Environmental-Mitigation-Plans_SCIP-A_pdf'}, {'safe_text': 'Community_Offshore_Wind_LLC_–_Stakeholder_Engagement_Plans_for_SCIP_Facilities_[PDF]', 'filename': 'COSW_Public-Stakeholder-Engagement-Plans_SCIP-A_pdf'}, {'safe_text': 'Smulders_–_Secondary_Steel_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'Question-41_COSW-Secondary-Steel-SCIP_Public-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Staten_Island_Marine_Terminal_–_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'Question-40_SIMT-SCIP_Public-and-Confidential-Jobs-and-Workforce-Plan_Combined_pdf'}, {'safe_text': 'Invenergy_Wind_Offshore_LLC_–_Leading_Light_Wind_Proposal_[PDF]', 'filename': 'INV_Public-Proposal-Narrative_22Feb-Update_pdf'}, {'safe_text': 'Invenergy_Wind_Offshore_LLC_–_Leading_Light_Wind_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'INV_Public-Fisheries-Plan_All-Proposals-Public_pdf'}, {'safe_text': 'Invenergy_Wind_Offshore_LLC_–_Leading_Light_Wind_Environmental_Mitigation_Plan_[PDF]', 'filename': 'INV_Public-Environmental-Plan_All-Proposals-Public_pdf'}, {'safe_text': 'Invenergy_Wind_Offshore_LLC_–_Leading_Light_Wind_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'INV_Public-Stakeholder-Plan_All-Proposals-Public_pdf'}, {'safe_text': 'Invenergy_Wind_Offshore_LLC_–_Leading_Light_Wind_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'INV_Public-Jobs-and-Workforce-Plan_Public_pdf'}, {'safe_text': 'Arthur_Kill_Terminal_LLC_–_Environmental_Mitigation_Plan_for_Arthur_Kill_Terminal_[PDF]', 'filename': 'Supply-Chain-Investment-Plan_Facility1_public-environmental-plan_public_pdf'}, {'safe_text': 'Arthur_Kill_Terminal_LLC_–_Stakeholder_Engagement_Plan_for_Arthur_Kill_Terminal_[PDF]', 'filename': 'Supply-Chain-Investment-Plan_Facility1_public-stakeholder-plan_public_pdf'}, {'safe_text': 'Arthur_Kill_Terminal_LLC_–_New_York_Jobs_and_Workforce_Plan_for_Arthur_Kill_Terminal_[PDF]', 'filename': 'INV_Public_Arthur-Kill-Terminal_Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Brooklyn_Navy_Yard_–_Environmental_Mitigation_Plan_for_Brooklyn_Navy_Yard_Operations_and_Maintenance', 'filename': 'Supply-Chain-Investment-Plan_Facility2_public-environmental-plan_public_pdf'}, {'safe_text': 'Brooklyn_Navy_Yard_–_Stakeholder_Engagement_Plan_for_Brooklyn_Navy_Yard_Operations_and_Maintenance_P', 'filename': 'Supply-Chain-Investment-Plan_-Facility2-_public-stakeholder-plan_public_pdf'}, {'safe_text': 'Brooklyn_Navy_Yard_–_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': '41_BNY-Appendix-H---PUBLIC_pdf'}, {'safe_text': 'Cimolai-HY_LLC_–_Environmental_Mitigation_Plan_for_Olean_Steel_Fabrication_Plant_[PDF]', 'filename': 'Supply-Chain-Investment-Plan_Facility5_public-environmental-plan_public_pdf'}, {'safe_text': 'Cimolai-HY_LLC_–_Stakeholder_Engagement_Plan_for_Olean_Steel_Fabrication_Plant_[PDF]', 'filename': 'Supply-Chain-Investment-Plan_Facility5_public-stakeholder-plan_public_pdf'}, {'safe_text': 'Cimolai-HY_LLC_–_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': '65_Cimolai-HY-Jobs-Workforce-Plan_PUBLIC_pdf'}, {'safe_text': 'SGRE_–_Environmental_Mitigation_Plan_for_Nacelle_Facility_[PDF]', 'filename': '77_SGRE_Environmental-Mitigation-Plan_Redacted_pdf'}, {'safe_text': 'SGRE_–_Stakeholder_Engagement_Plan_for_Nacelle_Facility_[PDF]', 'filename': '77_SGRE_Stakeholder-Engagment-Plan_Redacted_pdf'}, {'safe_text': 'SGRE_–_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': '78_SGRE_Jobs-and-Workforce-Plan_Redacted_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Vineyard_Offshore_Proposals_[PDF]', 'filename': 'Vineyard-Offshore-40-Proposal-NarrativePUBLICrevised-22422_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Vineyard_Offshore_Supporting_Attachments_[PDF]', 'filename': 'Proposal-Narrative-Public-Supporting-Attachments_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Fisheries_Mitigation_Plan_for_Excelsior_Wind_[PDF]', 'filename': '461-OCSA-0544Public-Fisheries-Mitigation-Plan-1_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Fisheries_Mitigation_Plan_for_Liberty_Wind_North_and_Liberty_Wind_South_[PDF', 'filename': '462-OCSA-0522Public-Fisheries-Mitigation-Plan_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Environmental_Mitigation_Plan_for_Excelsior_Wind_[PDF]', 'filename': '471-OCSA-544Public-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Environmental_Mitigation_Plan_for_Liberty_Wind_North_and_Liberty_Wind_South_', 'filename': '472-OCSA-522Public-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Stakeholder_Engagement_Plan_for_Excelsior_Wind_Liberty_Wind_North_and_Libert', 'filename': '48-Vineyard-OffshorePublic-Stakeholder-Engagement-Plan_pdf'}, {'safe_text': 'Vineyard_Offshore_LLC_–_Vineyard_Offshore_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'Vineyard-Offshore_Public-New-York-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Cable_Manufacturing_SCIP_–_Environmental_Mitigation_Plan_[PDF]', 'filename': '4123-Cable-SCIP-Facility-Environmental-Mitigation-Plan--Public_pdf'}, {'safe_text': 'Cable_Manufacturing_SCIP_–_Stakeholder_Engagement_Plan_[PDF]', 'filename': '4123-Cable-SCIP-Facility-Stakeholder-Engagement-Plan--Public_pdf'}, {'safe_text': 'Cable_Manufacturing_SCIP_–_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'Attachment-6---Cable-Facility-Appendix-H-NY-Jobs-and-Workforce-Plan---PUBLIC_pdf'}, {'safe_text': 'Responses_to_Written_Questions_[PDF]', 'filename': 'ORECRFP22-1-Responses-to-Written-Questions-12-23_pdf'}, {'safe_text': 'Request_for_Proposals_ORECRFP22-1_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_A_-_Notice_of_Intent_to_Propose_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_B_-_Proposer_Certification_Form_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_C_1_-_Economic_Benefits_Claims_and_Verifications_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_C_2_-_Supply_Chain_Investment_Plan_Requirements_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_C_3_-_Disadvantaged_Community_Benefits_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_D_-_Elements_of_the_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_E_-_Elements_of_the_Environmental_Mitigation_Plan_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_F_-_Elements_of_the_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_G_-_Meshed_Ready_Technical_Requirements_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_H_-_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_I_-_Offshore_Wind_Renewable_Energy_Certificate_Standard_Form_Purchase_and_Sale_Agreement_[D', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Redline_of_Appendix_I_vs_July_27_version_[PDF]', 'filename': 'ORECRFP22-1-Redline-of-ORECRFP22-1-Appendix-I-Agreement_pdf'}, {'safe_text': 'Changed_Pages_of_Appendix_I_vs_Dec_23_Version_[PDF]', 'filename': 'Changed-Pages-of-Appendix-I-vs-Dec-23-version_pdf'}, {'safe_text': 'Appendix_J_-_SCIP_Facility_Funding_Agreement_[DOCX]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Redline_of_Appendix_J_vs_July_27_version_[PDF]', 'filename': 'ORECRFP22-1-Redline-of-Form-SCIP-Funding-Agreement_pdf'}, {'safe_text': 'Changed_Pages_of_Appendix_J_vs_Dec_23_Version_[PDF]', 'filename': 'Changed-Pages-of-Appendix-J-vs-Dec-23-version_pdf'}, {'safe_text': 'Appendix_K_-_Offer_Data_Form_[XLSX]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_L_-_Master_Offers_Form_[XLSX]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_M_-_Supply_Chain_Investment_Plan_Data_Form_[XLSX]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_N_-_Proposal_Submission_Guide_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_O_-_Standard_Form_Capital_Commitment_Agreement_[DOCX]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Disclosure_Statement_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Executive_Order_No_16_[PDF]', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Data_Form_Example_Package_[ZIP]', 'filename': 'ORECRFP22-1-Data-Form-Example-Package_zip'}]
+
+Here is the reference context:
+Offshore Wind 2022 Solicitation - NYSERDA
+We value your privacy
+We use first- and third-party cookies and similar technologies for enhancing your experience, personalization, analytics, advertising, and improving our site. By using this website, you consent to our use of cookies. You can learn more about how we collect and use information by reviewing our
+Internet Privacy Policy
+.
+Ok
+subscribe
+Pick a topic, get updates!
+(opens in new window)
+Find a Program
+Find A Contractor
+About
+Print this page
+Back to Offshore Wind Solicitations
+2022 Offshore Wind Solicitation (Closed)
+Under the New York State Public Service Commission’s (PSC)
+Order Establishing Offshore Wind Standard and Framework
+[PDF]
+for Phase 1 Procurement, issued on July 12, 2018,
+Order Adopting Modifications to the Clean Energy Standard
+[PDF]
+issued on October 15, 2020 in Case No. 15-E-0302, and most recently in the
+Order on Power Grid Study Recommendations
+[PDF]
+issued on January 20, 2022 in Case Nos. 20-E-0197, 18-E-0071, and 15-E-0302, NYSERDA sought to procure Offshore Wind Renewable Energy Credits (ORECs) through this third solicitation (ORECRFP22-1). NYSERDA competitively selected three projects:
+Attentive Energy One
+(developed by TotalEnergies, Rise Light & Power, and Corio Generation),
+Community Offshore Wind
+(developed by RWE Offshore Renewables and National Grid Ventures), and
+Excelsior Wind
+(developed by Vineyard Offshore).
+On October 24, 2023, NYSERDA provisionally awarded three offshore wind projects: Attentive Energy One (1,404 MW), Community Offshore Wind (1,314 MW), and Excelsior Wind (1,314 MW). NYSERDA also provisionally awarded $300 million of New York State grant funding to GE Vernova and LM Wind Power for nacelle and blade manufacturing in New York’s Capital Region, which was associated with the provisionally awarded projects. Subsequent to the provisional award announcement, material modifications to projects bid into New York’s third offshore wind solicitation caused technical and commercial complexities between provisional awardees and their partners, resulting in the provisionally awarded parties’ inability to come to terms. Of note, GE Vernova’s offshore wind turbine product pivot away from the initially proposed 18 MW Haliade-X turbine platform to a 15.5/16.5 MW platform caused material changes to projects proposed into ORECRFP22-1. Given these developments, NYSERDA announced in April 2024 that the solicitation concluded and no final awards were made.
+2022 Solicitation Map
+Show Map Information
+Show Map Information
+Hide Map Information
+Hide Map Information
+The map displays the locations of the three offshore wind projects awarded as part of NYSERDA’s 2022 solicitation, as well as proposed points of interconnection. All three projects are located south of Long Island in the New York Bight.
+Attentive Energy One:
+proposed to interconnect at the Ravenswood Site in Astoria, Queens.
+Community Offshore Wind:
+proposed to interconnect at the Con Edison Clean Energy Hub in Brookyln.
+Excelsior Wind:
+proposed to interconnect at the East Garden City Substation in Nassau County.
+Closed Solicitation, ORECRFP22-1
+On July 27, 2022, Governor Hochul announced the
+release of New York’s third competitive offshore wind solicitation
+, seeking enough clean, renewable energy to power at least 1.5 million New York homes. The third solicitation included the first phase of a nation-leading $500 million investment in offshore wind ports, manufacturing, and supply chain infrastructure, as announced during the 2022 State of the State Address.
+On January 26, 2023, NYSERDA received a robust response to New York’s third offshore wind solicitation, with more than 100 total proposals for eight new projects from six offshore wind developers – representing a record-setting level of competition among East Coast states.
+On
+April 4, 2023
+and
+May 12, 2023
+, the U.S. Department of the Treasury and Internal Revenue Service issued guidance regarding the Inflation Reduction Act which provides increased clarity regarding eligibility requirements for certain tax credits available to offshore wind projects. To ensure robust and competitive pricing, NYSERDA provided all Proposers with an opportunity to submit updated offer pricing to reflect this guidance as well as other clarifications issued in accordance with the solicitation.
+On July 27, 2023, NYSERDA issued an addendum to ORECRFP22-1 to ensure the most cost-effective outcome of the solicitation for ratepayers. As part of this addendum, NYSERDA provided a clarification to all bidders and offered another opportunity for updated pricing to ensure the most competitive award group. Bid prices could not be adjusted upwards and no other changes to bids were allowed.
+A
+draft version
+of the solicitation was released for public comment in March 2022, and a follow-up
+request for Information
+was released in May 2022 to ensure that the procurement advances New York’s offshore wind goals in a thoughtful, cost-effective, and environmentally responsible manner to the benefit of all New Yorkers. During the two public comment periods, NYSERDA received over 1,300 comments from over 60 stakeholder groups and individuals representing the development community, labor, academia, manufacturing, environmental organizations, ratepayers, and others. In addition to the Request for Information process, NYSERDA hosted an
+information webinar
+[PDF]
+on the Supply Chain Investment Plans (SCIPs) related to ORECRFP22-1 and the $500 million in New York State funding for offshore wind infrastructure on July 14, 2022.
+This third solicitation includes key initiatives to advance New York’s responsible and forward-thinking approach to growing our offshore wind portfolio. The 2022 solicitation reflects step changes in New York State Public Service Law, Public Service Commission Orders, and priorities expressed by Governor Hochul in the
+2022 State of the State Address
+[PDF]
+:
+Supply Chain Investment Plans (SCIPs)
+are required and will support the development of a strong, local supply chain that will not only create jobs for New Yorkers but help bolster the State’s standing as a regional hub for offshore wind manufacturing.
+Due to the reduced footprint in transmitting energy from offshore wind projects to shore, high voltage direct current (HVDC) technology will be required for all projects where cables will be installed in areas of constraint. If HVDC is used, projects must be
+Meshed Ready
+to strengthen reliability and provide redundancy. These features also permit more flexibility for future offshore wind projects. Please refer to Appendix G to learn more about these requirements.
+Proposals must include
+Stakeholder Engagement Plans
+and
+New York Workforce and Jobs Plans
+to ensure alignment with the principles of a just transition outlined in the Climate Leadership and Community Protection Act (“Climate Act”).
+In promoting the intent of the New York Buy American Act, the solicitation sets a minimum U.S. iron and steel purchase requirement for all projects awarded to encourage domestic steel production and requiring developers to provide opportunities for
+U.S.-based steel suppliers
+to participate in the growing offshore wind industry.
+Proposers may submit plans to
+repurpose existing downstate fossil-based electric generation infrastructure
+in alignment with Governor Hochul’s 2022 State of the State priorities to enhance future system reliability and support more renewable energy on the grid. Proposers must submit a timeline and studies to support the proposal that consider local requirements and plans to address the just transition of generation plant workers.
+This solicitation allows for
+economic benefits
+associated with
+Energy Storage
+and other
+clean energy and decarbonization investments
+. Investments may include pilot and demonstration projects that complement offshore wind development, including innovative storage projects such as Clean Electrolytic Hydrogen.
+Submitted Proposals
+The public versions of the ORECRFP22-1 proposals are included below:
+Attentive Energy LLC – Attentive Energy One
+Attentive Energy LLC – Attentive Energy One Proposal
+[PDF]
+Attentive Energy LLC – Attentive Energy One Fisheries Mitigation Plan
+[PDF]
+Attentive Energy LLC – Attentive Energy One Environmental Mitigation Plan
+[PDF]
+Attentive Energy LLC – Attentive Energy One Stakeholder Engagement Plan
+[PDF]
+Attentive Energy LLC – Attentive Energy One New York Jobs and Workforce Plan
+[PDF]
+Arthur Kill Terminal LLC – Environmental Mitigation Plan for Arthur Kill Terminal
+[PDF]
+Arthur Kill Terminal LLC – Stakeholder Engagement Plan for Arthur Kill Terminal
+[PDF]
+Arthur Kill Terminal LLC – New York Jobs and Workforce Plan for Arthur Kill Terminal
+[PDF]
+GE Vernova – Environmental Mitigation Plan for Port of Coeymans Nacelle Manufacturing Facility
+[PDF
+]
+GE Vernova – Stakeholder Engagement Plan
+[PDF]
+GE Vernova – Nacelle Facility New York Jobs and Workforce Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Environmental Mitigation Plan for Port of Coeymans Blade Manufacturing Facility
+[PDF]
+GE Renewable Energy LM Wind Power – Stakeholder Engagement Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Blade Facility New York Jobs and Workforce Plan
+[PDF]
+Bay State Wind LLC – Sunrise Wind 2
+Bay State Wind LLC – Sunrise Wind 2 Proposal
+[PDF]
+Bay State Wind LLC – Sunrise Wind 2 Fisheries Mitigation Plan
+[PDF]
+Bay State Wind LLC – Sunrise Wind 2 Environmental Mitigation Plan
+[PDF]
+Bay State Wind LLC – Sunrise Wind 2 Stakeholder Engagement Plan
+[PDF]
+Bay State Wind LLC – Sunrise Wind 2 New York Jobs and Workforce Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Environmental Mitigation Plan for Port of Coeymans Blade Manufacturing Facility
+[PDF]
+GE Renewable Energy LM Wind Power – Stakeholder Engagement Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Blade Facility New York Jobs and Workforce Plan
+[PDF]
+Vestas Blades America – Supply Chain Investment Plan
+[PDF]
+Vestas Blades America – Stakeholder Engagement Plan
+[PDF]
+Vestas Blades America – Environmental Mitigation Plan for Vestas NY Blades Facility
+[PDF]
+Vestas Blades America – Vestas’ Social Management System
+[PDF]
+Beacon Wind LLC – Beacon Wind 2
+Beacon Wind LLC – Beacon Wind 2 Proposal
+[PDF]
+Beacon Wind LLC – Beacon Wind 2 Fisheries Mitigation Plan
+[PDF]
+Beacon Wind LLC – Beacon Wind 2 Environmental Mitigation Plan
+[PDF]
+Beacon Wind LLC – Beacon Wind 2 Stakeholder Engagement Plan
+[PDF]
+Beacon Wind LLC – Beacon Wind 2 New York Jobs and Workforce Plan
+[PDF]
+GE Vernova – Environmental Mitigation Plan for Port of Coeymans Nacelle Manufacturing Facility
+[PDF]
+GE Vernova – Stakeholder Engagement Plan
+[PDF]
+GE Vernova – Nacelle Facility New York Jobs and Workforce Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Environmental Mitigation Plan for Port of Coeymans Blade Manufacturing Facility
+[PDF]
+GE Renewable Energy LM Wind Power – Stakeholder Engagement Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Blade Facility New York Jobs and Workforce Plan
+[PDF]
+Cable Manufacturing SCIP – Environmental Mitigation Plan
+[PDF]
+Cable Manufacturing SCIP – Stakeholder Engagement Plan
+[PDF]
+Cable Manufacturing SCIP – New York Jobs and Workforce Plan
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind
+Community Offshore Wind LLC – Community Offshore Wind Proposal
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind Public Appendices
+[zip]
+Community Offshore Wind LLC – Community Offshore Wind Fisheries Mitigation Plan
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind Environmental Mitigation Plan
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind Stakeholder Engagement Plan Part 1
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind Stakeholder Engagement Plan Part 2
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind Stakeholder Engagement Plan Part 3
+[PDF]
+Community Offshore Wind LLC – Community Offshore Wind New York Jobs and Workforce Plan
+[PDF]
+Community Offshore Wind LLC – Environmental Mitigation Plans for SCIP Facilities
+[PDF]
+Community Offshore Wind LLC – Stakeholder Engagement Plans for SCIP Facilities
+[PDF]
+GE Vernova – Nacelle Facility New York Jobs and Workforce Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Blade Facility New York Jobs and Workforce Plan
+[PDF]
+Smulders – Secondary Steel New York Jobs and Workforce Plan
+[PDF]
+Staten Island Marine Terminal – New York Jobs and Workforce Plan
+[PDF]
+Invenergy Wind Offshore LLC – Leading Light Wind
+Invenergy Wind Offshore LLC – Leading Light Wind Proposal
+[PDF]
+Invenergy Wind Offshore LLC – Leading Light Wind Fisheries Mitigation Plan
+[PDF]
+Invenergy Wind Offshore LLC – Leading Light Wind Environmental Mitigation Plan
+[PDF]
+Invenergy Wind Offshore LLC – Leading Light Wind Stakeholder Engagement Plan
+[PDF]
+Invenergy Wind Offshore LLC – Leading Light Wind New York Jobs and Workforce Plan
+[PDF]
+Arthur Kill Terminal LLC – Environmental Mitigation Plan for Arthur Kill Terminal
+[PDF]
+Arthur Kill Terminal LLC – Stakeholder Engagement Plan for Arthur Kill Terminal
+[PDF]
+Arthur Kill Terminal LLC – New York Jobs and Workforce Plan for Arthur Kill Terminal
+[PDF]
+Brooklyn Navy Yard – Environmental Mitigation Plan for Brooklyn Navy Yard Operations and Maintenance Port
+[PDF]
+Brooklyn Navy Yard – Stakeholder Engagement Plan for Brooklyn Navy Yard Operations and Maintenance Port
+[PDF]
+Brooklyn Navy Yard – New York Jobs and Workforce Plan
+[PDF]
+Cimolai-HY LLC – Environmental Mitigation Plan for Olean Steel Fabrication Plant
+[PDF]
+Cimolai-HY LLC – Stakeholder Engagement Plan for Olean Steel Fabrication Plant
+[PDF]
+Cimolai-HY LLC – New York Jobs and Workforce Plan
+[PDF]
+GE Vernova – Environmental Mitigation Plan for Port of Coeymans Nacelle Manufacturing Facility
+[PDF]
+GE Vernova – Stakeholder Engagement Plan
+[PDF]
+GE Vernova – Nacelle Facility New York Jobs and Workforce Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Environmental Mitigation Plan for Port of Coeymans Blade Manufacturing Facility
+[PDF]
+GE Renewable Energy LM Wind Power – Stakeholder Engagement Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Blade Facility New York Jobs and Workforce Plan
+[PDF]
+SGRE – Environmental Mitigation Plan for Nacelle Facility
+[PDF]
+SGRE – Stakeholder Engagement Plan for Nacelle Facility
+[PDF]
+SGRE – New York Jobs and Workforce Plan
+[PDF]
+Vineyard Offshore LLC – Excelsior Wind, Liberty Wind North, Liberty Wind South
+Vineyard Offshore LLC – Vineyard Offshore Proposals
+[PDF]
+Vineyard Offshore LLC – Vineyard Offshore Supporting Attachments
+[PDF]
+Vineyard Offshore LLC – Fisheries Mitigation Plan for Excelsior Wind
+[PDF]
+Vineyard Offshore LLC – Fisheries Mitigation Plan for Liberty Wind North and Liberty Wind South
+[PDF]
+Vineyard Offshore LLC – Environmental Mitigation Plan for Excelsior Wind
+[PDF]
+Vineyard Offshore LLC – Environmental Mitigation Plan for Liberty Wind North and Liberty Wind South
+[PDF]
+Vineyard Offshore LLC – Stakeholder Engagement Plan for Excelsior Wind, Liberty Wind North, and Liberty Wind South
+[PDF]
+Vineyard Offshore LLC – Vineyard Offshore New York Jobs and Workforce Plan
+[PDF]
+GE Vernova – Environmental Mitigation Plan for Port of Coeymans Nacelle Manufacturing Facility
+[PDF]
+GE Vernova – Stakeholder Engagement Plan
+[PDF]
+GE Vernova – Nacelle Facility New York Jobs and Workforce Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Environmental Mitigation Plan for Port of Coeymans Blade Manufacturing Facility
+[PDF]
+GE Renewable Energy LM Wind Power – Stakeholder Engagement Plan
+[PDF]
+GE Renewable Energy LM Wind Power – Blade Facility New York Jobs and Workforce Plan
+[PDF]
+Cable Manufacturing SCIP – Environmental Mitigation Plan
+[PDF]
+Cable Manufacturing SCIP – Stakeholder Engagement Plan
+[PDF]
+Cable Manufacturing SCIP – New York Jobs and Workforce Plan
+[PDF]
+ORECRFP22-1 Schedule
+Event
+Date (all times ET)
+RFP Release Date
+July 27, 2022
+Proposers’ Conference
+Presentation Slides
+[PDF]
+August 23, 2022, 10:00 a.m.
+Deadline for Submission of Written Questions
+September 16, 2022, 3:00 p.m.
+Responses to Written Questions
+[PDF]
+Posted December 23, 2022
+NYSERDA Portal Open for Registration
+November 4, 2022
+Deadline for Notice of Intent to Propose and all
+Certifications Under Executive Order No.16*
+December 1, 2022, 3:00 p.m.
+Deadline to Supplement Notices of Intent with
+Funding Recipient Information*
+January 5, 2023, 3:00 p.m.
+NYSERDA Portal Open for Submissions
+January 19, 2023, 3:00 p.m.
+Proposal Submission Deadline
+January 26, 2023, 3:00 p.m.
+Updated Offer Price Deadline
+June 16, 2023, 5:00 p.m.
+RFP Addendum Issued
+July 27, 2023
+RFP Addendum and Updated Offer Price Deadline
+August 24, 2023, 3:00 p.m.
+NYSERDA Award Notification Date
+October 24, 2023
+Solicitation Concluded, No Final Awards
+April 2024
+Please note that the above dates are subject to change.
+* Appendix A should be returned by the December 1 deadline, even if Funding Recipient information is not final at that time. In addition, a certification under
+Executive Order No. 16
+, as published by the Office of General Services at https://ogs.ny.gov/EO-16, must also be submitted by every Proposer as well as by every potential Funding Recipient by the December 1 deadline. Proposers are permitted to supplement their Notices of Intent with information related to Funding Recipients until the January 5 deadline.
+ORECRFP22-1 Documents
+Request for Proposals (ORECRFP22-1)
+[PDF]
+Updated July 27, 2023
+Appendix A - Notice of Intent to Propose
+[PDF]
+Appendix B - Proposer Certification Form
+[PDF]
+Appendix C.1 - Economic Benefits Claims and Verifications
+[PDF]
+Appendix C.2 - Supply Chain Investment Plan Requirements
+[PDF]
+Appendix C.3 - Disadvantaged Community Benefits
+[PDF]
+Appendix D - Elements of the Fisheries Mitigation Plan
+[PDF]
+Appendix E - Elements of the Environmental Mitigation Plan
+[PDF]
+Appendix F - Elements of the Stakeholder Engagement Plan
+[PDF]
+Appendix G - Meshed Ready Technical Requirements
+[PDF]
+Appendix H - New York Jobs and Workforce Plan
+[PDF]
+Appendix I - Offshore Wind Renewable Energy Certificate Standard Form Purchase and Sale Agreement
+[DOCX]
+- Updated May 19, 2023
+Redline of Appendix I vs July 27 version
+[PDF]
+- Updated May 19, 2023
+Changed Pages of Appendix I vs Dec 23 Version
+[PDF]
+- Updated May 19, 2023
+Appendix J - SCIP Facility Funding Agreement
+[DOCX]
+- Updated May 19, 2023
+Redline of Appendix J vs July 27 version [PDF]
+- Updated May 19, 2023
+Changed Pages of Appendix J vs Dec 23 Version
+[PDF]
+- Updated May 19, 2023
+Appendix K - Offer Data Form
+[XLSX]
+Appendix L - Master Offers Form
+[XLSX]
+Appendix M - Supply Chain Investment Plan Data Form
+[XLSX]
+Appendix N - Proposal Submission Guide
+[PDF]
+Appendix O - Standard Form Capital Commitment Agreement
+[DOCX]
+Disclosure Statement
+[PDF]
+Executive Order No. 16
+[PDF]
+Data Form Example Package
+[ZIP]
+Eligibility Requirements
+Offshore Wind Availability as of July 2022
+[fig:{0D3C7D41-8D13-4895-8E8A-3A2282F0F626}]
+In accordance with Public Service Commission Orders, eligibility is limited to projects that:
+Are located off the coast of the United States
+Become operational on or after January 1, 2015
+Demonstrate delivery of electricity into New York
+Have obtained a lease (executed or provisional) from the
+Bureau of Ocean Energy Management (BOEM)
+, and
+(New in ORECRFP22-1)
+Include Supply Chain Investment Plans that will utilize up to $300 million in New York State funding to localize component manufacturing and critical offshore wind staging, assembling, maintenance and operations ports
+(New in ORECRFP22-1)
+Must be Meshed Ready (in accordance with the specifications noted in Appendix G) and they must utilize HVDC technology for the radial export cable
+(New in ORECRFP22-1)
+Stakeholder Engagement Plans and New York Workforce and Jobs Plans
+This RFP supports the responsible and cost-effective development of offshore wind by requiring proposers to:
+Include commitments to negotiate project labor agreements, labor peace agreements and prevailing wages
+Submit environmental and fisheries mitigation plans describing development practice that will minimize impacts to fisheries and the environment
+Participate in New York State’s offshore wind technical working groups: Environmental, Commercial Fishing, Jobs and Supply Chain, and Maritime
+Consult with relevant State agencies around fishing, wildlife, and the environment
+Make environmental data collected during site assessment publicly available
+Implement lighting controls to minimize nighttime visibility
+Minimize visual impacts
+Evaluation Criteria
+The Public Service Commission Orders prescribe the evaluation of proposals to be based upon an ultimate weighting of 70% price considerations, 20% economic benefits to New Yorkers, and 10% project viability.
+Proposers Conference
+NYSERDA hosted a conference for proposers via webinar on August 23, 2022 at 10:00 a.m. EST. The webinar addressed key elements from the RFP including eligibility criteria, submission requirements, the proposal evaluation process, contract commitments, and the post-award process and agreement. Interested parties may review the presentation slides through the following link,
+ORECRFP22-1: Proposers Conference Presentation Slides
+[PDF]
+.
+Responses to Written Questions
+NYSERDA’s Offshore Wind Team has released a complete set of responses to questions, available here:
+ORECRFP22-1 Responses to Written Questions
+[PDF]
+. Some questions, such as those regarding modifications to the Standard Form OREC Purchase and Sale Agreement and the SCIP Facility Funding Agreement, have been addressed directly through changes to the RFP documents. Please review the updated RFP documents under “ORECRFP22-1 Documents” to view all document modifications.
+The deadline for submission of questions for the ORECRFP22-1 was September 16, 2022. An initial set (1-26) of responses to written questions was published on September 13, 2022. Questions 27-170 were published on October 7, 2022, questions 171-172 were published on October 19, 2022, questions 173-211 were published on November 4, 2022 questions 212-220 were published on November 23, 2022, and questions 221-232 were published on December 23, 2022.
+In order to maintain the integrity of the competitive process, questions about the RFP were requested to be stated in a generic and non-project specific manner such that the question and answer could be anonymized and published in accordance with Section 1.6 of the RFP. It was requested that no information should be shared with NYSERDA regarding the specifics of a potential proposal if it is not able to be published in this manner.
+2022 Offshore Wind Solicitation – Notices of Intent to Propose
+NYSERDA’s 2022 offshore wind solicitation captured significant interest from the private market. NYSERDA received six Notices of Intent to Propose, representing:
+Seven offshore lease areas totaling approximately eight gigawatts of new generation capacity; and
+Project developers Attentive Energy LLC, Bay State Wind LLC, Beacon Wind LLC, Community Offshore Wind LLC, Invenergy Wind Offshore LLC, and Vineyard Offshore LLC (two leases)
+ORECRFP22-1
+Notice of Intent to Propose Map
+[fig:{B200C299-845E-428F-B622-37B79D9BE2D5}]
+Communications and Updates Regarding the RFP
+All relevant documents pertaining to this RFP will be available on this site. Any changes to the RFP process or documents will be posted on this site and sent via email to those parties who have submitted a Notice of Intent to Propose. Interested parties are advised to check this website for updates.
+back to top

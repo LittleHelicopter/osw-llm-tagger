@@ -1,0 +1,320 @@
+You are given a list of documents. Each item includes a `text` field (the display title) and a `filename` field (the linked file name). Your task is to classify each document into **one of the following categories**:
+
+• Request for Proposals (RFP)
+• Contract
+• Comment
+• Memorandum of Understanding (MOU)
+• Regulatory Filing
+• Policy Guidance
+• Public Notice
+• Industry Response
+• Other
+
+Use both the `text` and `filename` fields to infer the category, and refer to the contextual information provided below. If the information is insufficient or ambiguous, choose `Other`.
+
+Return a JSON array with the same number of objects. Each object must include the original `text` and `filename`, along with an additional `category` field. Example:
+{
+  "text": "Example Title",
+  "filename": "example.pdf",
+  "category": "Policy Guidance"
+}
+
+Here is the data:
+[{'safe_text': 'Order_Establishing_Offshore_Wind_Standard_and_Framework_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'Order_Adopting_Modifications_to_the_Clean_Energy_Standard_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'Order_on_Power_Grid_Study_Recommendations_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'Order_Denying_Petitions_to_Preserve_Competitive_Renewable_Energy_Market_and_Protect_Consumers_[PDF]', 'filename': 'ViewDoc_aspx'}, {'safe_text': 'AE1_Executive_Summary_[PDF]', 'filename': 'ATT_Public-Executive-Summary_pdf'}, {'safe_text': 'AE1_Project_Schedule_and_Status_[PDF]', 'filename': 'ATT_Public-Project-Schedule-and-Status_pdf'}, {'safe_text': 'AE1_Project_Development_Plan_[PDF]', 'filename': 'ATT_Public-Project-Development-Plan_pdf'}, {'safe_text': 'AE1_Interconnection_and_Deliverability_Plan_[PDF]', 'filename': 'ATT_Public-Interconnection-and-Deliverability-Plan_pdf'}, {'safe_text': 'AE1_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'ATT_Public-Fisheries-Mitigation-Plan_pdf'}, {'safe_text': 'AE1_Environmental_Mitigation_Plan_[PDF]', 'filename': 'ATT_Public-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'AE1_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'ATT_Public-Stakeholder-Engagement-Plan_pdf'}, {'safe_text': 'AE1_Disadvantaged_Community_Impacts_[PDF]', 'filename': 'ATT_Public-Disadvantaged-Community-Impacts_pdf'}, {'safe_text': 'AE1_Visibility_Study_[PDF]', 'filename': 'ATT_Public-Visibility-Study_pdf'}, {'safe_text': 'AE1_Economic_Benefits_Plan_[PDF]', 'filename': 'ATT_Public-Economic-Benefits-Plan_pdf'}, {'safe_text': 'AE1_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'ATT_Public-New-York-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_Executive_Summary_[PDF]', 'filename': 'COSW_Public-Executive-Summary_pdf'}, {'safe_text': 'Community_Offshore_Wind_Project_Schedule_and_Status_[PDF]', 'filename': 'COSW_Public-Project-Schedule-and-Status_pdf'}, {'safe_text': 'Community_Offshore_Wind_Project_Development_Plan_[PDF]', 'filename': 'COSW_Public-Project-Development-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_Interconnection_and_Deliverability_Plan_[PDF]', 'filename': 'COSW_Public-Interconnection-and-Deliverability-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'COSW_Public-Fisheries-Mitigation-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_Environmental_Mitigation_Plan_[PDF]', 'filename': 'COSW_Public-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'COSW_Public-Stakeholder-Engagement-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_Disadvantaged_Community_Impacts_[PDF]', 'filename': 'COSW_Public-Disadvantaged-Community-Impacts_pdf'}, {'safe_text': 'Community_Offshore_Wind_Visibility_Study_[PDF]', 'filename': 'COSW_Public-Visibility-Study_pdf'}, {'safe_text': 'Community_Offshore_Wind_Economic_Benefits_Plan_[PDF]', 'filename': 'COSW_Public-Economic-Benefits-Plan_pdf'}, {'safe_text': 'Community_Offshore_Wind_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'COSW_Public-New-York-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Long_Island_Wind_Executive_Summary_[PDF]', 'filename': 'ORST_Public-Executive-Summary_pdf'}, {'safe_text': 'Long_Island_Wind_Project_Schedule_and_Status_[PDF]', 'filename': 'ORST_Public-Schedule-and-Status_pdf'}, {'safe_text': 'Long_Island_Wind_Project_Development_Plan_Part_1_of_4_[PDF]', 'filename': 'ORST_Public-Project-Development-Plan-Part-1-of-4_pdf'}, {'safe_text': 'Long_Island_Wind_Project_Development_Plan_Part_2_of_4_[PDF]', 'filename': 'ORST_Public-Project-Development-Plan-Part-2-of-4_pdf'}, {'safe_text': 'Long_Island_Wind_Project_Development_Plan_Part_3_of_4_[PDF]', 'filename': 'ORST_Public-Project-Development-Plan-Part-3-of-4_pdf'}, {'safe_text': 'Long_Island_Wind_Project_Development_Plan_Part_4_of_4_[PDF]', 'filename': 'ORST_Public-Project-Development-Plan-Part-4-of-4_pdf'}, {'safe_text': 'Long_Island_Wind_Interconnection_and_Deliverability_Plan_[PDF]', 'filename': 'ORST_Public-Interconnection-and-Deliverability-Plan_pdf'}, {'safe_text': 'Long_Island_Wind_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'ORST_Public-Fisheries-Mitigation-Plan_pdf'}, {'safe_text': 'Long_Island_Wind_Environmental_Mitigation_Plan_[PDF]', 'filename': 'ORST_Public-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'Long_Island_Wind_Stakeholder_Engagement_Plan_Part_1_of_2_[PDF]', 'filename': 'ORST_Public-Stakeholder-Engagement-Plan-Part-1-of-2_pdf'}, {'safe_text': 'Long_Island_Wind_Stakeholder_Engagement_Plan_Part_2_of_2_[PDF]', 'filename': 'ORST_Public-Stakeholder-Engagement-Plan-Part-2-of-2_pdf'}, {'safe_text': 'Long_Island_Wind_Disadvantaged_Community_Impacts_[PDF]', 'filename': 'ORST_Public-Disadvantaged-Community-Impacts_pdf'}, {'safe_text': 'Long_Island_Wind_Visibility_Study_[PDF]', 'filename': 'ORST_Public-Visibility-Study_pdf'}, {'safe_text': 'Long_Island_Wind_Economic_Benefits_Plan_[PDF]', 'filename': 'ORST_Public-Economic-Benefits-Plan_pdf'}, {'safe_text': 'Long_Island_Wind_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'ORST_Public-New-York-Jobs-and-Workforce-Plan_pdf'}, {'safe_text': 'Excelsior_Wind_Executive_Summary_[PDF]', 'filename': 'VIN_Public-Executive-Summary_pdf'}, {'safe_text': 'Excelsior_Wind_Project_Schedule_and_Status_[PDF]', 'filename': 'VIN_Public-Project-Schedule-and-Status_pdf'}, {'safe_text': 'Excelsior_Wind_Project_Development_Plan_[PDF]', 'filename': 'VIN_Public-Project-Development-Plan-v2_pdf'}, {'safe_text': 'Excelsior_Wind_Interconnection_and_Deliverability_Plan_[PDF]', 'filename': 'VIN_Public-Interconnection-and-Deliverability-Plan_pdf'}, {'safe_text': 'Excelsior_Wind_Fisheries_Mitigation_Plan_[PDF]', 'filename': 'VIN_Public-Fisheries-Mitigation-Plan_pdf'}, {'safe_text': 'Excelsior_Wind_Environmental_Mitigation_Plan_[PDF]', 'filename': 'VIN_Public-Environmental-Mitigation-Plan_pdf'}, {'safe_text': 'Excelsior_Wind_Stakeholder_Engagement_Plan_[PDF]', 'filename': 'VIN_Public-Stakeholder-Engagement-Plan-v2_pdf'}, {'safe_text': 'Excelsior_Wind_Disadvantaged_Community_Impacts_[PDF]', 'filename': 'VIN_Public-Disadvantaged-Community-Impacts_pdf'}, {'safe_text': 'Excelsior_Wind_Visibility_Study_[PDF]', 'filename': 'VIN_Public-Visibility-Study_pdf'}, {'safe_text': 'Excelsior_Wind_Economic_Benefits_Plan_[PDF]', 'filename': 'VIN_Public-Economic-Benefits-Plan-v2_pdf'}, {'safe_text': 'Excelsior_Wind_New_York_Jobs_and_Workforce_Plan_[PDF]', 'filename': 'VIN_Public-New-York-Jobs-and-Workforce-Plan-v2_pdf'}, {'safe_text': "Proposer's_Conference_Webinar_Presentation_[PDF]", 'filename': '2024-07-22-ORECRFP24-1-Proposers-Conference_pdf'}, {'safe_text': 'Responses_to_Written_Questions_updated_August_29_2024_[PDF]', 'filename': 'ORECRFP241-Responses-to-Written-Questions82924_pdf'}, {'safe_text': 'Request_for_Proposals_ORECRFP24-1', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_A_–_Proposer_Certification_Form', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_B_1_–_Economic_Benefits_Claims_and_Documentation_Requirement', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_B_2_–_Disadvantaged_Community_Impacts', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_C_–_Elements_of_the_Fisheries_Mitigation_Plan', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_D_–_Elements_of_the_Environmental_Mitigation_Plan', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_E_–_Elements_of_the_Stakeholder_Engagement_Plan', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_F_–_Meshed_Ready_Technical_Requirements', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_G_–_New_York_Jobs_and_Workforce_Plan', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_H_–_Offshore_Wind_Renewable_Energy_Certificate_Standard_Form_Purchase_and_Sale_Agreement', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Redline_of_Appendix_H_September_26_version_vs_August_13_version', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_I_–_Offer_Data_Form', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_J_–_Master_Offer_Form', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_K_–_Proposal_Submission_Guide', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_L_–_Non-Disclosure_Agreement', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Appendix_M_-_Award_Security_Form_of_Irrevocable_Standby_Letter_of_Credit', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Executive_Order_16_and_Explanation', 'filename': 'servlet_FileDownload'}, {'safe_text': 'Request_for_Information_OSWRFI24-1', 'filename': 'servlet_FileDownload'}, {'safe_text': 'webinar_presentation_[PDF]', 'filename': 'WebinarSML-RFP--OSW-RFI572023_pdf'}]
+
+Here is the reference context:
+2024 Solicitation - NYSERDA
+We value your privacy
+We use first- and third-party cookies and similar technologies for enhancing your experience, personalization, analytics, advertising, and improving our site. By using this website, you consent to our use of cookies. You can learn more about how we collect and use information by reviewing our
+Internet Privacy Policy
+.
+Ok
+subscribe
+Pick a topic, get updates!
+(opens in new window)
+Find a Program
+Find A Contractor
+About
+Print this page
+Back to Offshore Wind Solicitations
+2024 Offshore Wind Solicitation (Closed)
+Under the New York State Public Service Commission’s (PSC)
+Order Establishing Offshore Wind Standard and Framework
+[PDF]
+for Phase 1 Procurement, issued on July 12, 2018,
+Order Adopting Modifications to the Clean Energy Standard
+[PDF]
+issued on October 15, 2020 in Case No. 15-E-0302, the
+Order on Power Grid Study Recommendations
+[PDF]
+issued on January 20, 2022 in Case Nos. 20-E-0197, 18-E-0071, and 15-E-0302, and the Public Service Commission (Commission)
+Order Denying Petitions to Preserve Competitive Renewable Energy Market and Protect Consumers
+[PDF]
+issued on October 12, 2023 (the October 2023 Order), NYSERDA seeks to procure Offshore Wind Renewable Energy Credits (ORECs) through a fifth solicitation (ORECRFP24-1).
+The fifth offshore wind solicitation advances the State’s progress to develop offshore wind energy in alignment with the State’s
+10-Point Action Plan
+and the goals of the
+Climate Leadership and Community Protection Act (Climate Act)
+. It is part of a sequential approach to allow the offshore wind supply chain to develop in coordination with offshore wind energy projects, each on their own timeline. The approach includes three solicitations, beginning with this OREC solicitation. For more information, please visit the
+Supply Chain webpage
+.
+On September 9, 2024, NYSERDA received 25 proposals in response to ORECRFP24-1 from four offshore wind developers representing 6,870 MW in total offer capacity. Public versions of the proposals are posted below.
+On October 18, 2024, NYSERDA received Offer Pricing for 21 proposals, and Attentive Energy withdrew its 4 proposals.
+Closed Solicitation, ORECRFP24-1
+On July 17, 2024, NYSERDA launched New York’s fifth competitive offshore wind solicitation.
+As part of this solicitation, NYSERDA has included key provisions from the latest rounds of renewable energy procurements such as inflation indexing, Disadvantaged Community commitments, and related priorities to maintain the policy objectives introduced in prior solicitations intended to ensure an equitable energy transition for all New Yorkers.
+This Request for Proposals (RFP) supports the responsible and cost-effective development of offshore wind by requiring proposers to:
+Include commitments to negotiate project labor agreements and labor peace agreements
+Submit environmental and fisheries mitigation plans describing development practices that will minimize impacts to fisheries and the environment
+Submit stakeholder engagement and workforce development plans to ensure alignment with the just transition priorities of New York’s Climate Act
+Participate in New York State’s offshore wind technical working groups: Environmental, Commercial Fishing, Jobs and Supply Chain, Maritime, and Environmental Justice
+Consult with relevant State agencies around fishing, wildlife, and the environment
+Make environmental data collected during site assessment publicly available
+Implement lighting controls to minimize nighttime visibility
+Submitted Proposals
+The public versions of the ORECRFP24-1 proposals are included below:
+Attentive Energy – Attentive Energy One (AE1)
+Attentive Energy –
+AE1 Executive Summary
+[PDF]
+Attentive Energy –
+AE1 Project Schedule and Status
+[PDF]
+Attentive Energy –
+AE1 Project Development Plan
+[PDF]
+Attentive Energy –
+AE1 Interconnection and Deliverability Plan
+[PDF]
+Attentive Energy –
+AE1 Fisheries Mitigation Plan
+[PDF]
+Attentive Energy –
+AE1 Environmental Mitigation Plan
+[PDF]
+Attentive Energy –
+AE1 Stakeholder Engagement Plan
+[PDF]
+Attentive Energy –
+AE1 Disadvantaged Community Impacts
+[PDF]
+Attentive Energy –
+AE1 Visibility Study
+[PDF]
+Attentive Energy –
+AE1 Economic Benefits Plan
+[PDF]
+Attentive Energy –
+AE1 New York Jobs and Workforce Plan
+[PDF]
+Community Offshore Wind - Community Offshore Wind
+Community Offshore Wind –
+Community Offshore Wind Executive Summary
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Project Schedule and Status
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Project Development Plan
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Interconnection and Deliverability Plan
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Fisheries Mitigation Plan
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Environmental Mitigation Plan
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Stakeholder Engagement Plan
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Disadvantaged Community Impacts
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Visibility Study
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind Economic Benefits Plan
+[PDF]
+Community Offshore Wind –
+Community Offshore Wind New York Jobs and Workforce Plan
+[PDF]
+Ørsted– Long Island Wind
+Ørsted –
+Long Island Wind Executive Summary
+[PDF]
+Ørsted –
+Long Island Wind Project Schedule and Status
+[PDF]
+Ørsted –
+Long Island Wind Project Development Plan Part 1 of 4
+[PDF]
+Ørsted –
+Long Island Wind Project Development Plan Part 2 of 4
+[PDF]
+Ørsted –
+Long Island Wind Project Development Plan Part 3 of 4
+[PDF]
+Ørsted –
+Long Island Wind Project Development Plan Part 4 of 4
+[PDF]
+Ørsted –
+Long Island Wind Interconnection and Deliverability Plan
+[PDF]
+Ørsted –
+Long Island Wind Fisheries Mitigation Plan
+[PDF]
+Ørsted –
+Long Island Wind Environmental Mitigation Plan
+[PDF]
+Ørsted –
+Long Island Wind Stakeholder Engagement Plan Part 1 of 2
+[PDF]
+Ørsted –
+Long Island Wind Stakeholder Engagement Plan Part 2 of 2
+[PDF]
+Ørsted –
+Long Island Wind Disadvantaged Community Impacts
+[PDF]
+Ørsted –
+Long Island Wind Visibility Study
+[PDF]
+Ørsted –
+Long Island Wind Economic Benefits Plan
+[PDF]
+Ørsted –
+Long Island Wind New York Jobs and Workforce Plan
+[PDF]
+Vineyard Offshore – Excelsior Wind
+Vineyard Offshore –
+Excelsior Wind Executive Summary
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Project Schedule and Status
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Project Development Plan
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Interconnection and Deliverability Plan
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Fisheries Mitigation Plan
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Environmental Mitigation Plan
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Stakeholder Engagement Plan
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Disadvantaged Community Impacts
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Visibility Study
+[PDF]
+Vineyard Offshore –
+Excelsior Wind Economic Benefits Plan
+[PDF]
+Vineyard Offshore –
+Excelsior Wind New York Jobs and Workforce Plan
+[PDF]
+back to top
+As of October 18, 2024, Attentive Energy has withdrawn its proposals.
+ORECRFP24-1 Solicitation Schedule
+Please note that the above dates are subject to change.
+Event
+Date (all times ET)
+RFP Release Date
+July 17, 2024
+Proposer's Conference Webinar Presentation
+[PDF]
+July 22, 2024, 10:00 a.m.
+Deadline for Submission of Written Questions
+July 30, 2024, 3:00 p.m.
+Responses to Written Questions, updated August 29, 2024
+[PDF]
+August 29, 2024
+Deadline for Requests for Material Changes to Agreement
+August 19, 2024
+NYSERDA Portal Open for Registration
+August 26, 2024
+Deadline for NYSERDA Portal Registration
+NYSERDA Portal Open for Submissions
+September 3, 2024, 3:00 p.m.
+Proposal Submission Deadline for Non-Price Information
+September 9, 2024, 3:00 p.m.
+Updated Draft Agreement Published, and NYSERDA Feedback to Proposers on Economic Benefits, Interconnection Costs, and Index
+B
+values for use in Agreement(s)
+September 26, 2024
+Submission Deadline for Offer Pricing
+October 18, 2024, 3:00 p.m.
+Proposer Contingent Award Notification Date
+Expected by November 8, 2024
+Contract(s) Executed and Public Award Notification Date
+Expected Q1 2025
+ORECRFP24-1 Documents
+Request for Proposals (ORECRFP24-1)
+(Updated August 13, 2024)
+Appendix A – Proposer Certification Form
+(Updated August 13, 2024)
+Appendix B.1 – Economic Benefits Claims and Documentation Requirement
+(Updated August 13, 2024)
+Appendix B.2 – Disadvantaged Community Impacts
+(Updated August 13, 2024)
+Appendix C – Elements of the Fisheries Mitigation Plan
+Appendix D – Elements of the Environmental Mitigation Plan
+Appendix E – Elements of the Stakeholder Engagement Plan
+Appendix F – Meshed Ready Technical Requirements
+Appendix G – New York Jobs and Workforce Plan
+(Updated August 13, 2024)
+Appendix H – Offshore Wind Renewable Energy Certificate Standard Form Purchase and Sale Agreement
+(Updated September 26, 2024)
+Redline of Appendix H September 26 version vs August 13 version
+Redline of Appendix H cumulative changes as of September 26
+Appendix I – Offer Data Form
+(Updated August 28, 2024)
+Appendix J – Master Offer Form
+(Updated August 28, 2024)
+Appendix K – Proposal Submission Guide
+Appendix L – Non-Disclosure Agreement
+(Updated August 13, 2024)
+Appendix M - Award Security Form of Irrevocable Standby Letter of Credit
+Executive Order 16 and Explanation
+Eligibility Requirements
+In accordance with Public Service Commission Orders, eligibility is limited to projects that:
+Are located off the coast of the United States
+Become operational on or after January 1, 2015
+Demonstrate delivery of electricity into New York
+Have obtained a lease (executed or provisional) from the Bureau of Ocean Energy Management (BOEM)
+Additional information regarding OREC eligibility is outlined in Section 2 of the RFP.
+Evaluation Criteria
+The Public Service Commission Orders prescribe the evaluation of proposals to be based upon an ultimate weighting of 70% price considerations, 20% economic benefits to New Yorkers, and 10% project viability.
+Responses to Written Questions
+NYSERDA’s Offshore Wind Team published a first set (1-58) of responses to written questions on August 7, 2024, an updated set (59-124) of responses to written questions on August 13, 2024, and a final set (125) on August 29, 2024, available here:
+ORECRFP24-1 Responses to Written Questions
+[PDF]
+.
+Prospective bidders are encouraged to
+review all responses and specifically
+review the answers to questions 27, 43, and 54.
+The deadline for submission of questions for ORECRFP24-1 was July 30, 2024.
+To maintain the integrity of the competitive process, questions about the RFP were requested to be stated in a generic and non-project-specific manner such that the question and answer could be anonymized and published in accordance with Section 1.5 of the RFP. It was requested that no information should be shared with NYSERDA regarding the specifics of a potential proposal if it is not able to be published in this manner.
+Communications and Updates Regarding the RFP
+All relevant documents pertaining to this RFP will be available on this site. Any changes to the RFP process or documents will be posted on this site. Interested parties are advised to check this website for updates.
+Request for Information OSWRFI24-1 (Closed)
+On April 23, 2024, NYSERDA issued a
+Request for Information (OSWRFI24-1)
+to solicit industry feedback to inform the development of the State’s fifth Offshore Wind Renewable Energy Certificate (OREC) solicitation (NY5). NYSERDA also sought feedback on the issuance of a parallel Request for Proposals (RFP) to make available at least $300 million for offshore wind supply chain investments, repurposing the funds that were previously provisionally awarded to GE Vernova and LM Wind Power as part of the State’s
+third offshore wind solicitation
+.
+On May 7, 2024, NYSERDA hosted a webinar to discuss the details of OSWRFI24-1. The
+webinar presentation
+[PDF]
+is available to download.
+Responses to the Request for Information document (
+2024 Offshore Wind Request for Information
+) were due on May 21, 2024 at 3:00 p.m. ET.
